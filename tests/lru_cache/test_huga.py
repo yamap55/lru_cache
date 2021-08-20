@@ -1,4 +1,4 @@
-from hoge.huga import Huga
+from lru_cache.huga import Huga
 
 
 class TestHuga:
