@@ -12,3 +12,4 @@ services:
     image: lru_cache-image
     container_name: lru_cache-container
     tty: true
+    env_file: .env
