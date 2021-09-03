@@ -13,13 +13,13 @@ class LastRecentlyUsedCashe:
         """初期化"""
         self.cashe = {}
 
-    def put(self, key: str, value: Any) -> None:
+    def put(self, key: Any, value: Any) -> None:
         """
         要素を格納する
 
         Parameters
         ----------
-        key : str
+        key : Any
             要素のキー
         value : Any
             要素の値
