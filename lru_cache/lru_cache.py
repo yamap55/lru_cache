@@ -1,3 +1,6 @@
+from typing import Any
+
 
 class LastRecentlyUsedCashe:
-    pass
+    def put(self, key: str, value: Any) -> None:
+        pass
