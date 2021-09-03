@@ -9,6 +9,10 @@ class LastRecentlyUsedCashe:
     Last Recently Used Cashe
     """
 
+    def __init__(self) -> None:
+        """初期化"""
+        self.cashe = {}
+
     def put(self, key: str, value: Any) -> None:
         """
         要素を格納する
@@ -20,4 +24,20 @@ class LastRecentlyUsedCashe:
         value : Any
             要素の値
         """
-        pass
+        self.cashe[key] = value
+
+    def get(self, key: str) -> Any:
+        """
+        格納されているKeyに紐づく要素を取得する
+
+        Parameters
+        ----------
+        key : str
+            要素のキー
+
+        Returns
+        -------
+        Any
+            要素
+        """
+        return self.cashe[key]
