@@ -18,6 +18,10 @@
 - VS Code の拡張機能「Remote - Containers」インストール
   - https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers
 - 本リポジトリの clone
+- `.env` ファイルを空ファイルでプロジェクト直下に作成
+  - proxy が必要な環境の場合は以下を追加
+    - `http_proxy=http://PROXY_HOST:PROXY_PORT`
+    - `https_proxy=http://PROXY_HOST:PROXY_PORT`
 
 ### 開発手順
 
