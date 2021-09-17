@@ -9,9 +9,10 @@ class LastRecentlyUsedCashe:
     Last Recently Used Cashe
     """
 
-    def __init__(self) -> None:
+    def __init__(self, cache_size: int = 10) -> None:
         """初期化"""
         self.cashe = {}
+        self.cache_size = cache_size
 
     def put(self, key: Any, value: Any) -> None:
         """

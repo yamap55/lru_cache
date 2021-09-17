@@ -20,7 +20,7 @@ def test_get():
 class TestGetReturnNone:
     def test_exceed_cache_size(self):
         # キャッシュサイズが指定値を超えた時にgetできないこと
-        lru = LastRecentlyUsedCashe(size=1)
+        lru = LastRecentlyUsedCashe(cache_size=1)
         lru.put("a", "dataA")
         lru.put("b", "dataB")
 
