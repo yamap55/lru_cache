@@ -1,6 +1,7 @@
 """
 Last Recently Used Cashe
 """
+from collections import OrderedDict
 from typing import Any
 
 
@@ -11,8 +12,9 @@ class LastRecentlyUsedCashe:
 
     def __init__(self, cache_size: int = 10) -> None:
         """初期化"""
-        self.cashe = {}
+        self.cache = OrderedDict()
         self.cache_size = cache_size
+        self.cache_keys = []
 
     def put(self, key: Any, value: Any) -> None:
         """
@@ -25,7 +27,11 @@ class LastRecentlyUsedCashe:
         value : Any
             要素の値
         """
-        self.cashe[key] = value
+        if len(self.cache) == self.cache_size:
+            pop_key, pop_value = self.cache.popitem(last=False)
+            print(f"cache removed. key={pop_key}, value={pop_value}")
+
+        self.cache[key] = value
 
     def get(self, key: str) -> Any:
         """
@@ -41,6 +47,6 @@ class LastRecentlyUsedCashe:
         Any
             要素
         """
-        if key in self.cashe:
-            return self.cashe[key]
+        if key in self.cache:
+            return self.cache[key]
         return None
