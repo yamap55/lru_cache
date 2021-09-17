@@ -41,4 +41,6 @@ class LastRecentlyUsedCashe:
         Any
             要素
         """
-        return self.cashe[key]
+        if key in self.cashe:
+            return self.cashe[key]
+        return None
