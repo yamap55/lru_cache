@@ -21,7 +21,7 @@ class TestGetReturnNone:
     def test_get_not_exist_key(self):
         lru = LastRecentlyUsedCashe()
 
-        actual = lru.get("a")
+        actual = lru.get("NotExistKey")
         expected = None
 
         assert actual == expected
@@ -30,10 +30,10 @@ class TestGetReturnNone:
         # キャッシュサイズが指定値を超えた時にgetできないこと
         lru = LastRecentlyUsedCashe(cache_size=1)
 
-        lru.put("a", "dataA")
-        lru.put("b", "dataB")
+        lru.put("old_key", "old_data")
+        lru.put("new_key", "new_data")
 
-        actual = lru.get("a")
+        actual = lru.get("old_key")
         expected = None
 
         assert actual == expected

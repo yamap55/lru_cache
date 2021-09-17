@@ -14,7 +14,6 @@ class LastRecentlyUsedCashe:
         """初期化"""
         self.cache = OrderedDict()
         self.cache_size = cache_size
-        self.cache_keys = []
 
     def put(self, key: Any, value: Any) -> None:
         """
