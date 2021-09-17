@@ -18,6 +18,14 @@ def test_get():
 
 
 class TestGetReturnNone:
+    def test_get_not_exist_key(self):
+        lru = LastRecentlyUsedCashe()
+
+        actual = lru.get("a")
+        expected = None
+
+        assert actual == expected
+
     def test_exceed_cache_size(self):
         # キャッシュサイズが指定値を超えた時にgetできないこと
         lru = LastRecentlyUsedCashe(cache_size=1)
