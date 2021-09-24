@@ -3,11 +3,23 @@ import pytest
 from lru_cache.lru_cache import LastRecentlyUsedCache
 
 
-def test_put():
-    lru = LastRecentlyUsedCache()
-    lru.put("a", "dataA")
+class TestPut:
+    @pytest.fixture(autouse=True)
+    def setup(self):
+        self.lru = LastRecentlyUsedCache(cache_size=1)
 
-    assert True
+    def test_normal(self):
+        self.lru.put("a", "dataA")
+
+        assert True
+
+    def test_duplicated_key(self):
+        self.lru.put("duplicated_key", "")
+        self.lru.put("duplicated_key", "duplicated")
+
+        actual = self.lru.get("duplicated_key")
+        expected = "duplicated"
+        assert actual == expected
 
 
 class TestGet:
