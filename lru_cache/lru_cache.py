@@ -46,6 +46,8 @@ class LastRecentlyUsedCashe:
         Any
             要素
         """
-        if key in self.cache:
-            return self.cache[key]
-        return None
+        if key not in self.cache:
+            return None
+
+        self.cache.move_to_end(key)
+        return self.cache[key]
