@@ -1,13 +1,13 @@
 """
-Last Recently Used Cashe
+Last Recently Used Cache
 """
 from collections import OrderedDict
 from typing import Any
 
 
-class LastRecentlyUsedCashe:
+class LastRecentlyUsedCache:
     """
-    Last Recently Used Cashe
+    Last Recently Used Cache
     """
 
     def __init__(self, cache_size: int = 10) -> None:
