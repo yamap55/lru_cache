@@ -70,12 +70,26 @@ class TestGetReturnNone:
 
 
 class TestChangeCacheSize:
-    def test_increase(self):
-        lru = LastRecentlyUsedCache(cache_size=0)
-        lru = lru.change_cache_size(1)
-        lru.put("new_key", "new_data")
+    @pytest.fixture(autouse=True)
+    def setup(self):
+        self.lru = LastRecentlyUsedCache(cache_size=2)
+        self.lru.put("old_key", "old_data")
 
-        actual = lru.get("new_key")
-        expected = "new_data"
+    def test_cache_size(self):
+        lru = self.lru.change_cache_size(100)
+        actual = lru.cache_size
+        expected = 100
+
+        assert actual == expected
+
+    @pytest.mark.parametrize(
+        "change_cache_size",
+        [1, 2, 3],
+    )
+    def test_unchanged_cache(self, change_cache_size):
+        lru = self.lru.change_cache_size(change_cache_size)
+        actual = list(lru.cache.items())
+
+        expected = [("old_key", "old_data")]
 
         assert actual == expected
