@@ -93,3 +93,16 @@ class TestChangeCacheSize:
         expected = [("old_key", "old_data")]
 
         assert actual == expected
+
+    def test_changed_cache(self):
+        lru = LastRecentlyUsedCache(cache_size=3)
+        lru.put("old_key1", "old_data1")
+        lru.put("old_key2", "old_data2")
+        lru.put("old_key3", "old_data3")
+
+        lru.change_cache_size(1)
+
+        actual = list(lru.cache.items())
+        expected = [("old_key3", "old_data3")]
+
+        assert actual == expected
