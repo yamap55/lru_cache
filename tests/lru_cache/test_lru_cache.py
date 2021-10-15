@@ -94,15 +94,18 @@ class TestChangeCacheSize:
 
         assert actual == expected
 
-    def test_changed_cache(self):
-        lru = LastRecentlyUsedCache(cache_size=3)
-        lru.put("old_key1", "old_data1")
-        lru.put("old_key2", "old_data2")
-        lru.put("old_key3", "old_data3")
+    class TestChangedCache:
+        @pytest.fixture(autouse=True)
+        def setup(self):
+            self.lru = LastRecentlyUsedCache(cache_size=3)
+            self.lru.put("old_key1", "old_data1")
+            self.lru.put("old_key2", "old_data2")
+            self.lru.put("old_key3", "old_data3")
 
-        lru.change_cache_size(1)
+        def test_changed_cache(self):
+            self.lru.change_cache_size(1)
 
-        actual = list(lru.cache.items())
-        expected = [("old_key3", "old_data3")]
+            actual = list(self.lru.cache.items())
+            expected = [("old_key3", "old_data3")]
 
-        assert actual == expected
+            assert actual == expected
