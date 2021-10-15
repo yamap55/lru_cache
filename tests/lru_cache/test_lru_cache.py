@@ -67,3 +67,15 @@ class TestGetReturnNone:
         expected = None
 
         assert actual == expected
+
+
+class TestChangeCacheSize:
+    def test_increase(self):
+        lru = LastRecentlyUsedCache(cache_size=0)
+        lru = lru.change_cache_size(1)
+        lru.put("new_key", "new_data")
+
+        actual = lru.get("new_key")
+        expected = "new_data"
+
+        assert actual == expected
