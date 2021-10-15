@@ -1,6 +1,8 @@
 """
 Last Recently Used Cache
 """
+from __future__ import annotations
+
 from collections import OrderedDict
 from typing import Any
 
@@ -27,8 +29,7 @@ class LastRecentlyUsedCache:
             要素の値
         """
         if len(self.cache) == self.cache_size:
-            pop_key, pop_value = self.cache.popitem(last=False)
-            print(f"cache removed. key={pop_key}, value={pop_value}")
+            self._delete_cache(1)
 
         self.cache[key] = value
 
@@ -51,3 +52,37 @@ class LastRecentlyUsedCache:
 
         self.cache.move_to_end(key)
         return self.cache[key]
+
+    def _delete_cache(self, cache_count: int) -> None:
+        """
+        古い方からキャッシュを削除する
+
+        Parameters
+        ----------
+        cache_count : int
+            削除するキャッシュ数
+        """
+        for _ in range(cache_count):
+            pop_key, pop_value = self.cache.popitem(last=False)
+            print(f"cache removed. key={pop_key}, value={pop_value}")
+
+    def change_cache_size(self, cache_size: int) -> LastRecentlyUsedCache:
+        """
+        キャッシュサイズを変更する
+
+        Parameters
+        ----------
+        cache_size : int
+            キャッシュサイズ
+
+        Returns
+        -------
+        LastRecentlyUsedCache
+            サイズが変更されたLastRecentlyUsedCache
+        """
+        diff_cache_size = len(self.cache) - cache_size
+        if diff_cache_size > 0:
+            self._delete_cache(diff_cache_size)
+
+        self.cache_size = cache_size
+        return self

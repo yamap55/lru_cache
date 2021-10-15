@@ -67,3 +67,45 @@ class TestGetReturnNone:
         expected = None
 
         assert actual == expected
+
+
+class TestChangeCacheSize:
+    @pytest.fixture(autouse=True)
+    def setup(self):
+        self.lru = LastRecentlyUsedCache(cache_size=2)
+        self.lru.put("old_key", "old_data")
+
+    def test_cache_size(self):
+        lru = self.lru.change_cache_size(100)
+        actual = lru.cache_size
+        expected = 100
+
+        assert actual == expected
+
+    @pytest.mark.parametrize(
+        "change_cache_size",
+        [1, 2, 3],
+    )
+    def test_unchanged_cache(self, change_cache_size):
+        lru = self.lru.change_cache_size(change_cache_size)
+        actual = list(lru.cache.items())
+
+        expected = [("old_key", "old_data")]
+
+        assert actual == expected
+
+    class TestChangedCache:
+        @pytest.fixture(autouse=True)
+        def setup(self):
+            self.lru = LastRecentlyUsedCache(cache_size=3)
+            self.lru.put("old_key1", "old_data1")
+            self.lru.put("old_key2", "old_data2")
+            self.lru.put("old_key3", "old_data3")
+
+        def test_changed_cache(self):
+            self.lru.change_cache_size(1)
+
+            actual = list(self.lru.cache.items())
+            expected = [("old_key3", "old_data3")]
+
+            assert actual == expected
