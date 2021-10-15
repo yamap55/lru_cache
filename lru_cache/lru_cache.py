@@ -1,6 +1,8 @@
 """
 Last Recently Used Cache
 """
+from __future__ import annotations
+
 from collections import OrderedDict
 from typing import Any
 
@@ -51,3 +53,25 @@ class LastRecentlyUsedCache:
 
         self.cache.move_to_end(key)
         return self.cache[key]
+
+    def change_cache_size(self, cache_size: int) -> LastRecentlyUsedCache:
+        """
+        キャッシュサイズを変更する
+
+        Parameters
+        ----------
+        cache_size : int
+            キャッシュサイズ
+
+        Returns
+        -------
+        LastRecentlyUsedCache
+            サイズが変更されたLastRecentlyUsedCache
+        """
+        if self.cache_size <= cache_size or len(self.cache) < cache_size:
+            pass
+        else:
+            # TODO: cacheの中身を消す必要がある
+            pass
+        self.cache_size = cache_size
+        return self
