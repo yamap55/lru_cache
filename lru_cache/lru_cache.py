@@ -71,7 +71,9 @@ class LastRecentlyUsedCache:
         if self.cache_size <= cache_size or len(self.cache) < cache_size:
             pass
         else:
-            # TODO: cacheの中身を消す必要がある
-            pass
+            for _ in range(len(self.cache) - cache_size):
+                pop_key, pop_value = self.cache.popitem(last=False)
+                print(f"cache removed. key={pop_key}, value={pop_value}")
+
         self.cache_size = cache_size
         return self
