@@ -6,21 +6,6 @@ from freezegun import freeze_time
 from lru_cache.lru_cache import LastRecentlyUsedCache
 
 
-class TestCacheTimeLimit:
-    def test_normal(self):
-        # TODO: getのテストなので移動する
-        lru = LastRecentlyUsedCache(cache_time_limit=60)
-        put_time = datetime.now()
-        lru.put("a", "dataA")
-        time = put_time + timedelta(minutes=10)  # 10分経過後の時間
-
-        with freeze_time(time):
-            actual = lru.get("a")
-
-        expected = None
-        assert actual == expected
-
-
 class TestPut:
     @pytest.fixture(autouse=True)
     def setup(self):
@@ -43,7 +28,7 @@ class TestPut:
 class TestGet:
     @pytest.fixture(autouse=True)
     def setup(self):
-        self.lru = LastRecentlyUsedCache(cache_size=2)
+        self.lru = LastRecentlyUsedCache(cache_size=2, cache_time_limit=60)
         self.lru.put("first_key", "data_1")
         self.lru.put("second_key", "data_2")
 
@@ -63,6 +48,23 @@ class TestGet:
         actual_first = self.lru.get("first_key")
         expected_first = "data_1"
         assert actual_first == expected_first
+
+    def test_time_limit(self):
+        put_time = datetime.now()
+        time = put_time + timedelta(minutes=10)  # 10分経過後の時間
+
+        with freeze_time(time):
+            actual = self.lru.get("first_key")
+
+        expected = None
+        assert actual == expected
+
+    def test_replace_time_limit(self):
+        _, put_time = self.lru.cache["first_key"]
+        self.lru.get("first_key")
+        _, actual = self.lru.cache["first_key"]
+
+        assert actual > put_time
 
 
 class TestGetReturnNone:
