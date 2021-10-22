@@ -1,6 +1,24 @@
+from datetime import datetime, timedelta
+
 import pytest
+from freezegun import freeze_time
 
 from lru_cache.lru_cache import LastRecentlyUsedCache
+
+
+class TestCacheTimeLimit:
+    def test_normal(self):
+        # TODO: getのテストなので移動する
+        lru = LastRecentlyUsedCache(cache_time_limit=60)
+        put_time = datetime.now()
+        lru.put("a", "dataA")
+        time = put_time + timedelta(minutes=10)  # 10分経過後の時間
+
+        with freeze_time(time):
+            actual = lru.get("a")
+
+        expected = None
+        assert actual == expected
 
 
 class TestPut:
@@ -88,7 +106,7 @@ class TestChangeCacheSize:
     )
     def test_unchanged_cache(self, change_cache_size):
         lru = self.lru.change_cache_size(change_cache_size)
-        actual = list(lru.cache.items())
+        actual = [(k, v[0]) for k, v in lru.cache.items()]
 
         expected = [("old_key", "old_data")]
 
@@ -105,7 +123,7 @@ class TestChangeCacheSize:
         def test_changed_cache(self):
             self.lru.change_cache_size(1)
 
-            actual = list(self.lru.cache.items())
+            actual = [(k, v[0]) for k, v in self.lru.cache.items()]
             expected = [("old_key3", "old_data3")]
 
             assert actual == expected
