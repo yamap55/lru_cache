@@ -3,6 +3,7 @@ Last Recently Used Cache
 """
 from __future__ import annotations
 
+import threading
 from collections import OrderedDict
 from datetime import datetime, timedelta
 from typing import Any
@@ -19,6 +20,7 @@ class LastRecentlyUsedCache:
         self.cache = OrderedDict()
         self.cache_size = cache_size
         self.cache_time_limit = timedelta(seconds=cache_time_limit)
+        self.lock = threading.Lock()
 
     def put(self, key: Any, value: Any) -> None:
         """
@@ -31,10 +33,9 @@ class LastRecentlyUsedCache:
         value : Any
             要素の値
         """
-        if len(self.cache) == self.cache_size:
-            self._delete_cache(1)
-
-        self.cache[key] = value, datetime.now()
+        with self.lock:
+            self._delete_cache(len(self.cache) - self.cache_size + 1)
+            self.cache[key] = value, datetime.now()
 
     def get(self, key: str) -> Any:
         """
