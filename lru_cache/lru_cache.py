@@ -56,7 +56,7 @@ class LastRecentlyUsedCache:
 
         if datetime.now() > (put_date + self.cache_time_limit):
             # 有効期間切れ
-            # TODO: 消すときに自分より古いものを全て消すことを検討する
+            # NOTE: 消すときに自分より古いものを全て消すことを検討する
             # ※indexを取得して_delete_cacheに渡すと実現可能か？
             self.cache.pop(key)
             return None
