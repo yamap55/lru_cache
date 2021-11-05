@@ -51,7 +51,6 @@ class LastRecentlyUsedCache:
             要素
         """
         if key not in self.cache:
-            [1, 2, 3, 4, 5]
             return None
         value, put_date = self.cache[key]
 
