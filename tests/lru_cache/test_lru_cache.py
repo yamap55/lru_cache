@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
 
 import pytest
@@ -22,6 +23,19 @@ class TestPut:
 
         actual = self.lru.get("duplicated_key")
         expected = "duplicated"
+        assert actual == expected
+
+    def test_multithread(self):
+        def worker():
+            for i in range(100):
+                self.lru.put(str(i), str(i))
+
+        with ThreadPoolExecutor() as executor:
+            [executor.submit(worker) for _ in range(100)]
+
+        actual = len(self.lru.cache)
+        expected = 1
+
         assert actual == expected
 
 
